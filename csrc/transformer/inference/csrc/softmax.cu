@@ -96,7 +96,7 @@ __global__ void attn_softmax_v2(__half* vals,
                                       (data_id + 3) > window_stride)
                                          ? __half2float(vals[data_id + 3])
                                          : minus_infinity;
-                    if (mask && recompute) {
+                    if (mask) {
                         low_data[i].x += __half2float(mask[data_id + mask_offset]);
                         low_data[i].y += __half2float(mask[data_id + mask_offset + 1]);
                         high_data[i].x += __half2float(mask[data_id + mask_offset + 2]);
@@ -116,7 +116,7 @@ __global__ void attn_softmax_v2(__half* vals,
                                          ? __half2float(vals[data_id + 2])
                                          : minus_infinity;
                     high_data[i].y = minus_infinity;
-                    if (mask && recompute) {
+                    if (mask) {
                         low_data[i].x += __half2float(mask[data_id + mask_offset]);
                         if ((data_id + 1) < sequence_length)
                             low_data[i].y += __half2float(mask[data_id + mask_offset + 1]);
@@ -265,7 +265,7 @@ __global__ void attn_softmax_v2(float* vals,
                                  (data_id + 3) > window_stride)
                                     ? vals[data_id + 3]
                                     : minus_infinity;
-                    if (attn_mask && recompute) {
+                    if (attn_mask) {
                         data[i].x += attn_mask[data_id + mask_offset];
                         data[i].y += attn_mask[data_id + mask_offset + 1];
                         data[i].z += attn_mask[data_id + mask_offset + 2];
@@ -282,7 +282,7 @@ __global__ void attn_softmax_v2(float* vals,
                                     ? (vals[data_id + 2])
                                     : minus_infinity;
                     data[i].w = minus_infinity;
-                    if (attn_mask && recompute) {
+                    if (attn_mask) {
                         data[i].x += attn_mask[data_id + mask_offset];
                         if ((data_id + 1) < sequence_length)
                             data[i].y += attn_mask[data_id + mask_offset + 1];
